@@ -1,0 +1,57 @@
+### Signup new user
+POST http://localhost:3000/users/signup
+Content-Type: application/json
+
+{
+  "email": "test5@example.com",
+  "password": "12345",
+  "name": "test5",
+  "profilePicture": "00101010101100001101011101100101"
+}
+
+### Login user
+POST http://localhost:3000/users/login
+Content-Type: application/json
+
+{
+  "email": "test1@example.com",
+  "password": "12345"
+}
+
+### Logout user
+POST http://localhost:3000/users/logout
+
+### Create new organization
+POST http://localhost:3000/organizations/create
+Content-Type: application/json
+
+{
+  "name": "test2 kft"
+}
+
+### Load all organizations accessible to current user
+GET http://localhost:3000/organizations
+
+### Load a specific organization accessible to current user
+GET http://localhost:3000/organizations/11
+
+### Add project owner to selected organization
+### Can only run if you loaded an organization already.
+POST http://localhost:3000/organizations/11
+Content-Type: application/json
+
+{
+  "email": "test5@example.com"
+}
+
+### Create new project to selected organization.
+### Can only run if you loaded an organization already.
+POST http://localhost:3000/projects/create
+Content-Type: application/json
+
+{
+  "name": "project1"
+}
+
+### List the selected organization's projects.
+GET http://localhost:3000/projects
