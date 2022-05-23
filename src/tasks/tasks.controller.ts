@@ -36,4 +36,23 @@ export class TasksController {
       projectId,
     );
   }
+
+  @UseInterceptors(TasksInterceptor)
+  @Post('/:taskId')
+  async createSubTask(
+    @Body() body: CreateTaskDto,
+    @Param('taskId', ParseIntPipe) taskId: number,
+  ) {
+    return this.taskService.createSubTask(
+      body.name,
+      body.description,
+      body.deadline,
+      taskId,
+    );
+  }
+
+  @Get('/:taskId')
+  async listOneTask(@Param('taskId', ParseIntPipe) taskId: number) {
+    return this.taskService.listOneTask(taskId);
+  }
 }
