@@ -19,11 +19,14 @@ export class Task {
   @Column()
   description: string;
 
-  @Column()
+  @Column({ default: null })
   order: number;
 
   @Column('date')
   deadline: Date;
+
+  @Column({ type: 'boolean', default: false })
+  done: boolean;
 
   @ManyToOne(() => Task, (task) => task.childTasks)
   parentTask: Task;

@@ -33,7 +33,7 @@ Content-Type: application/json
 GET http://localhost:3000/organizations
 
 ### Load a specific organization accessible to current user
-GET http://localhost:3000/organizations/11
+GET http://localhost:3000/organizations/10
 
 ### Add project owner to selected organization
 ### Can only run if you loaded an organization already.
@@ -46,12 +46,38 @@ Content-Type: application/json
 
 ### Create new project to selected organization.
 ### Can only run if you loaded an organization already.
-POST http://localhost:3000/projects/create
+POST http://localhost:3000/organizations/10/projects/create
 Content-Type: application/json
 
 {
-  "name": "project1"
+  "name": "project3"
 }
 
 ### List the selected organization's projects.
-GET http://localhost:3000/projects
+GET http://localhost:3000/organizations/10/projects
+
+### Create task
+POST http://localhost:3000/organizations/10/projects/13/tasks
+Content-Type: application/json
+
+{
+  "name": "task3",
+  "description": "task3 description",
+  "deadline": "2023-06-22"
+}
+
+### List tasks
+GET http://localhost:3000/organizations/10/projects/13/tasks
+
+### Create subtask
+POST http://localhost:3000/organizations/10/projects/13/tasks/1
+Content-Type: application/json
+
+{
+  "name": "subtask2",
+  "description": "subtask2 description",
+  "deadline": "2023-06-22"
+}
+
+### List one task
+GET http://localhost:3000/organizations/10/projects/13/tasks/5
