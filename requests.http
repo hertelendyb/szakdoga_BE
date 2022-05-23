@@ -61,7 +61,10 @@ POST http://localhost:3000/organizations/10/projects/13/tasks
 Content-Type: application/json
 
 {
-  "name": "task2",
-  "description": "task2 description",
+  "name": "task3",
+  "description": "task3 description",
   "deadline": "2023-06-22"
 }
+
+### List tasks
+GET http://localhost:3000/organizations/10/projects/13/tasks

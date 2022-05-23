@@ -18,8 +18,10 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   constructor(private taskService: TasksService) {}
 
-  // @Get('/')
-  // async listTasks(@Param('projectId', ParseIntPipe) projectId: number) {}
+  @Get('/')
+  async listTasks(@Param('projectId', ParseIntPipe) projectId: number) {
+    return this.taskService.listTasks(projectId);
+  }
 
   @UseInterceptors(TasksInterceptor)
   @Post('/')

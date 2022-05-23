@@ -27,4 +27,16 @@ export class TasksService {
     task.project = project;
     return this.taskRepo.save(task);
   }
+
+  async listTasks(projectId: number) {
+    const project = await this.projectRepo.findOne({ id: projectId });
+
+    if (!project) {
+      throw new NotFoundException('Project not found');
+    }
+
+    const tasks = await this.taskRepo.find({ relations: ['project'] });
+
+    return tasks.filter((task) => task.project.id === projectId);
+  }
 }
