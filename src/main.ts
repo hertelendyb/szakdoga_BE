@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.use(
     cookieSession({
-      keys: ['2fen4e94jkf'],
+      keys: ['938yhgq4urj'],
     }),
   );
   await app.listen(3000);

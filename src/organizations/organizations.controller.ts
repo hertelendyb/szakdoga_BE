@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -40,7 +41,6 @@ export class OrganizationsController {
       session.userId,
       orgId,
     );
-    session.orgId = orgId;
     console.log(session);
     return org;
   }
@@ -48,11 +48,11 @@ export class OrganizationsController {
   @Post('/:id')
   async addProjectOwnerToOrg(
     @Body() body: AddProjectOwner,
-    @Session() session: any,
+    @Param('id', ParseIntPipe) orgId: number,
   ) {
     const projectOwner = await this.organizationsService.addProjectOwnerToOrg(
       body.email,
-      session.orgId,
+      orgId,
     );
     return projectOwner;
   }
@@ -72,5 +72,10 @@ export class OrganizationsController {
     );
 
     return organization;
+  }
+
+  @Delete('/:id')
+  async deleteOrganization(@Param('id', ParseIntPipe) id: number) {
+    return this.organizationsService.deleteOrganization(id);
   }
 }

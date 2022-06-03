@@ -19,7 +19,9 @@ export class Project {
   @Column()
   name: string;
 
-  @ManyToOne(() => Organization, (organization) => organization.projects)
+  @ManyToOne(() => Organization, (organization) => organization.projects, {
+    onDelete: 'CASCADE',
+  })
   organization: Organization;
 
   @OneToMany(

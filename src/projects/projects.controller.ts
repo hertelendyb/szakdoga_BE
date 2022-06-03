@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -31,6 +32,16 @@ export class ProjectsController {
   async listProjects(@Param('id', ParseIntPipe) orgId: number) {
     const myProjects = await this.projectsService.getMyProjects(orgId);
     return myProjects;
+  }
+
+  @Get('/:projectId')
+  async listOneProject(@Param('projectId', ParseIntPipe) projectId: number) {
+    return this.projectsService.getProject(projectId);
+  }
+
+  @Delete('/:projectId')
+  async deleteProject(@Param('projectId', ParseIntPipe) projectId: number) {
+    return this.projectsService.deleteProject(projectId);
   }
 
   // @Post('/:id')

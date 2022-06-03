@@ -53,8 +53,17 @@ Content-Type: application/json
   "name": "project3"
 }
 
+### Delete organization
+DELETE http://localhost:3000/organizations/10
+
 ### List the selected organization's projects.
 GET http://localhost:3000/organizations/10/projects
+
+### List one project
+GET http://localhost:3000/organizations/10/projects/13
+
+### Delete project
+DELETE http://localhost:3000/organizations/10/projects/13
 
 ### Create task
 POST http://localhost:3000/organizations/10/projects/13/tasks
@@ -70,7 +79,7 @@ Content-Type: application/json
 GET http://localhost:3000/organizations/10/projects/13/tasks
 
 ### Create subtask
-POST http://localhost:3000/organizations/10/projects/13/tasks/1
+POST http://localhost:3000/organizations/10/projects/13/tasks/2
 Content-Type: application/json
 
 {
@@ -81,3 +90,6 @@ Content-Type: application/json
 
 ### List one task
 GET http://localhost:3000/organizations/10/projects/13/tasks/5
+
+### Delete task
+DELETE http://localhost:3000/organizations/10/projects/13/tasks/7

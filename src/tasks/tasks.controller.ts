@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -54,5 +55,10 @@ export class TasksController {
   @Get('/:taskId')
   async listOneTask(@Param('taskId', ParseIntPipe) taskId: number) {
     return this.taskService.listOneTask(taskId);
+  }
+
+  @Delete('/:taskId')
+  async deleteTask(@Param('taskId', ParseIntPipe) taskId: number) {
+    return this.taskService.deleteTask(taskId);
   }
 }

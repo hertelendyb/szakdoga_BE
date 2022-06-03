@@ -36,7 +36,6 @@ export class UsersController {
   @Post('/logout')
   logout(@Session() session: any) {
     session.userId = null;
-    session.orgId = null;
     console.log(session);
   }
 }

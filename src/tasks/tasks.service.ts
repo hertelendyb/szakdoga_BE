@@ -73,4 +73,14 @@ export class TasksService {
       relations: ['parentTask', 'childTasks'],
     });
   }
+
+  async deleteTask(taskId: number) {
+    const task = await this.taskRepo.findOne({ id: taskId });
+
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+
+    return this.taskRepo.delete({ id: taskId });
+  }
 }
