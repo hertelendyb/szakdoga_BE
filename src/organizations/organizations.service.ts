@@ -20,7 +20,7 @@ export class OrganizationsService {
     @InjectRepository(User) private userRepo: Repository<User>,
   ) {}
 
-  createNewOrg(name: string) {
+  async createNewOrg(name: string) {
     const organization = this.repo.create({ name });
 
     return this.repo.save(organization);
@@ -53,8 +53,10 @@ export class OrganizationsService {
     if (!access) {
       throw new ForbiddenException('You have no access to this organization');
     } else {
-      const org = await this.repo.findOne(orgId);
-      return org;
+      return this.repo.findOne({
+        where: { id: orgId },
+        relations: ['projects'],
+      });
     }
   }
 
@@ -85,5 +87,15 @@ export class OrganizationsService {
       roleId: 2,
     });
     return this.joinRepo.save(newProjectOwner);
+  }
+
+  async deleteOrganization(orgId: number) {
+    const org = await this.repo.findOne({ id: orgId });
+
+    if (!org) {
+      throw new NotFoundException('Organization not found');
+    }
+
+    return this.repo.delete({ id: orgId });
   }
 }

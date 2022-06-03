@@ -33,6 +33,7 @@ export class UserOrganizationRole {
   @ManyToOne(
     () => Organization,
     (organization) => organization.userOrganizationRole,
+    { onDelete: 'CASCADE' },
   )
   organization!: Organization;
 }
