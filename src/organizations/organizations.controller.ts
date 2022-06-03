@@ -45,7 +45,7 @@ export class OrganizationsController {
     return org;
   }
 
-  @Post('/:id')
+  @Post('/addPo/:id')
   async addProjectOwnerToOrg(
     @Body() body: AddProjectOwner,
     @Param('id', ParseIntPipe) orgId: number,

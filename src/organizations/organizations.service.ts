@@ -53,8 +53,10 @@ export class OrganizationsService {
     if (!access) {
       throw new ForbiddenException('You have no access to this organization');
     } else {
-      const org = await this.repo.findOne(orgId);
-      return org;
+      return this.repo.findOne({
+        where: { id: orgId },
+        relations: ['projects'],
+      });
     }
   }
 
