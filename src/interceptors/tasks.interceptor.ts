@@ -4,7 +4,8 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
+import { omit } from 'lodash';
 
 @Injectable()
 export class TasksInterceptor implements NestInterceptor {
@@ -13,6 +14,13 @@ export class TasksInterceptor implements NestInterceptor {
     if (request.body.deadline) {
       request.body.deadline = new Date(request.body.deadline);
     }
-    return next.handle();
+    return next.handle().pipe(
+      map((data) => {
+        if (data.assignee) {
+          return omit(data, 'assignee.password');
+        }
+        return data;
+      }),
+    );
   }
 }

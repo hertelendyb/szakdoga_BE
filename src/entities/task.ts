@@ -22,7 +22,7 @@ export class Task {
   @Column({ default: null })
   order: number;
 
-  @Column('date')
+  @Column({ type: 'date', default: null })
   deadline: Date;
 
   @Column({ type: 'boolean', default: false })
@@ -37,6 +37,6 @@ export class Task {
   @ManyToOne(() => Project, (project) => project.tasks, { onDelete: 'CASCADE' })
   project: Project;
 
-  @ManyToOne(() => User, (user) => user.tasks)
+  @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'SET NULL' })
   assignee: User;
 }

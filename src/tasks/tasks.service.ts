@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Project } from 'src/entities/project';
 import { Task } from 'src/entities/task';
+import { User } from 'src/entities/user';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -9,22 +10,36 @@ export class TasksService {
   constructor(
     @InjectRepository(Project) private projectRepo: Repository<Project>,
     @InjectRepository(Task) private taskRepo: Repository<Task>,
+    @InjectRepository(User) private userRepo: Repository<User>,
   ) {}
 
   async createTask(
     name: string,
     description: string,
     deadline: Date,
+    assigneeId: number,
     projectId: number,
   ) {
     const project = await this.projectRepo.findOne({ id: projectId });
+    const assignee = assigneeId
+      ? await this.userRepo.findOne({ id: assigneeId })
+      : null;
 
     if (!project) {
       throw new NotFoundException('Project not found');
     }
 
-    const task = this.taskRepo.create({ name, description, deadline });
-    task.project = project;
+    if (assignee === undefined) {
+      throw new NotFoundException('User not found');
+    }
+
+    const task = this.taskRepo.create({
+      name,
+      description,
+      deadline,
+      project,
+      assignee,
+    });
     return this.taskRepo.save(task);
   }
 
@@ -53,7 +68,7 @@ export class TasksService {
     }
 
     const tasks = await this.taskRepo.find({
-      relations: ['project', 'parentTask', 'childTasks'],
+      relations: ['project', 'parentTask', 'childTasks', 'assignee'],
     });
 
     return tasks.filter((task) =>

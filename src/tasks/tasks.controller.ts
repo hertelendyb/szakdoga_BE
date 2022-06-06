@@ -34,6 +34,7 @@ export class TasksController {
       body.name,
       body.description,
       body.deadline,
+      body.assigneeId,
       projectId,
     );
   }
