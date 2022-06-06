@@ -1,4 +1,4 @@
-import { IsDate, IsString } from 'class-validator';
+import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateTaskDto {
   @IsString()
@@ -7,6 +7,11 @@ export class CreateTaskDto {
   @IsString()
   description: string;
 
+  @IsOptional()
   @IsDate()
   deadline: Date;
+
+  @IsOptional()
+  @IsNumber()
+  assigneeId: number;
 }
