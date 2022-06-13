@@ -9,12 +9,12 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { TasksInterceptor } from 'src/interceptors/tasks.interceptor';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { TasksService } from './tasks.service';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthenticatedGuard)
 @Controller('organizations/:id/projects/:projectId/tasks')
 export class TasksController {
   constructor(private taskService: TasksService) {}

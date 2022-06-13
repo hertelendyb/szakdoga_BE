@@ -3,9 +3,9 @@ POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-  "email": "test5@example.com",
+  "email": "test9@example.com",
   "password": "12345",
-  "name": "test5",
+  "name": "test9",
   "profilePicture": "00101010101100001101011101100101"
 }
 
@@ -14,26 +14,26 @@ POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
-  "email": "test1@example.com",
+  "email": "test9@example.com",
   "password": "12345"
 }
 
 ### Logout user
-POST http://localhost:3000/users/logout
+GET http://localhost:3000/users/logout
 
 ### Create new organization
 POST http://localhost:3000/organizations/create
 Content-Type: application/json
 
 {
-  "name": "minta333 kft"
+  "name": "new minta 2 kft"
 }
 
 ### Load all organizations accessible to current user
 GET http://localhost:3000/organizations
 
 ### Load a specific organization accessible to current user
-GET http://localhost:3000/organizations/12
+GET http://localhost:3000/organizations/14
 
 ### Add project owner to selected organization
 ### Can only run if you loaded an organization already.
@@ -46,37 +46,38 @@ Content-Type: application/json
 
 ### Create new project to selected organization.
 ### Can only run if you loaded an organization already.
-POST http://localhost:3000/organizations/12/projects/create
+POST http://localhost:3000/organizations/14/projects/create
 Content-Type: application/json
 
 {
-  "name": "project4"
+  "name": "project123"
 }
 
 ### Delete organization
 DELETE http://localhost:3000/organizations/10
 
 ### List the selected organization's projects.
-GET http://localhost:3000/organizations/12/projects
+GET http://localhost:3000/organizations/14/projects
 
 ### List one project
-GET http://localhost:3000/organizations/10/projects/15
+GET http://localhost:3000/organizations/14/projects/17
 
 ### Delete project
 DELETE http://localhost:3000/organizations/10/projects/13
 
 ### Create task
-POST http://localhost:3000/organizations/10/projects/15/tasks
+POST http://localhost:3000/organizations/14/projects/17/tasks
 Content-Type: application/json
 
 {
-  "name": "task3",
-  "description": "task3 description",
-  "deadline": "2023-06-22"
+  "name": "task96",
+  "description": "task96 description",
+  "assigneeId": 30,
+  "deadline": "2022-05-12"
 }
 
 ### List tasks
-GET http://localhost:3000/organizations/10/projects/15/tasks
+GET http://localhost:3000/organizations/14/projects/17/tasks
 
 ### Create subtask
 POST http://localhost:3000/organizations/10/projects/13/tasks/10

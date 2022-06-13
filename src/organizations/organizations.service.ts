@@ -38,8 +38,7 @@ export class OrganizationsService {
     const connections = await this.joinRepo.find({ userId: id });
     const orgIDs = connections.map((connection) => connection.organizationId);
     if (orgIDs.length > 0) {
-      const myOrgs = await this.repo.findByIds(orgIDs);
-      return myOrgs;
+      return this.repo.findByIds(orgIDs);
     } else {
       return 'No organizations found';
     }
