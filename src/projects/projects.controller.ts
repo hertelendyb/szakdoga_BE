@@ -6,15 +6,13 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Session,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/guards/auth.guard';
-import { AddProjectOwner } from 'src/organizations/dtos/add-projectOwner.dto';
+import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { CreateProjectDto } from './dtos/create-project.dto';
 import { ProjectsService } from './projects.service';
 
-@UseGuards(AuthGuard)
+@UseGuards(AuthenticatedGuard)
 @Controller('organizations/:id/projects')
 export class ProjectsController {
   constructor(private projectsService: ProjectsService) {}
@@ -24,14 +22,12 @@ export class ProjectsController {
     @Body() body: CreateProjectDto,
     @Param('id', ParseIntPipe) orgId: number,
   ) {
-    const project = await this.projectsService.create(body.name, orgId);
-    return project;
+    return this.projectsService.create(body.name, orgId);
   }
 
   @Get('/')
   async listProjects(@Param('id', ParseIntPipe) orgId: number) {
-    const myProjects = await this.projectsService.getMyProjects(orgId);
-    return myProjects;
+    return this.projectsService.getMyProjects(orgId);
   }
 
   @Get('/:projectId')

@@ -47,11 +47,7 @@ export class ProjectsService {
       relations: ['organization'],
     });
 
-    const result = projects.filter(
-      (project) => project.organization.id === orgId,
-    );
-
-    return result;
+    return projects.filter((project) => project.organization.id === orgId);
   }
 
   async getProject(projectId: number) {

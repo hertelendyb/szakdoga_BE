@@ -1,41 +1,38 @@
-import { Body, Controller, Post, Session } from '@nestjs/common';
-import { Serialize } from 'src/interceptors/serialize.interceptor';
-import { AuthService } from './auth.service';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { UserDto } from './dtos/user.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
-@Serialize(UserDto)
 export class UsersController {
-  constructor(
-    private usersService: UsersService,
-    private authService: AuthService,
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   @Post('/signup')
-  async createUser(@Body() body: CreateUserDto, @Session() session: any) {
-    const user = await this.authService.signup(
+  async createUser(@Body() body: CreateUserDto) {
+    return this.usersService.signup(
       body.email,
       body.password,
       body.name,
       body.profilePicture,
     );
-    session.userId = user.id;
-    return user;
   }
 
+  @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async login(@Body() body: CreateUserDto, @Session() session: any) {
-    const user = await this.authService.login(body.email, body.password);
-    session.userId = user.id;
-    console.log(session);
-    return user;
+  async login(@Request() req) {
+    return req.user;
   }
 
-  @Post('/logout')
-  logout(@Session() session: any) {
-    session.userId = null;
-    console.log(session);
+  @Get('/logout')
+  logout(@Request() req) {
+    req.session.destroy();
+    return { msg: 'The user session has ended' };
   }
 }

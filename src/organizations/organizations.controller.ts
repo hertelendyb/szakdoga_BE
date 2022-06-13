@@ -9,27 +9,21 @@ import {
   Session,
   UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { AddProjectOwner } from './dtos/add-projectOwner.dto';
 import { CreateOrganizationDto } from './dtos/create-organization.dto';
 import { OrganizationsService } from './organizations.service';
 
-interface sess {
-  userId: number;
-  orgId: number;
-}
-
-@UseGuards(AuthGuard)
+@UseGuards(AuthenticatedGuard)
 @Controller('organizations')
 export class OrganizationsController {
   constructor(private organizationsService: OrganizationsService) {}
 
   @Get('/')
   async listOrganizations(@Session() session: any) {
-    const myOrganizations = await this.organizationsService.getMyOrganizations(
-      session.userId,
+    return this.organizationsService.getMyOrganizations(
+      session.passport.user.id,
     );
-    return myOrganizations;
   }
 
   @Get('/:id')
@@ -37,12 +31,10 @@ export class OrganizationsController {
     @Session() session: any,
     @Param('id', ParseIntPipe) orgId: number,
   ) {
-    const org = await this.organizationsService.loadOrganization(
-      session.userId,
+    return this.organizationsService.loadOrganization(
+      session.passport.user.id,
       orgId,
     );
-    console.log(session);
-    return org;
   }
 
   @Post('/addPo/:id')
@@ -50,11 +42,7 @@ export class OrganizationsController {
     @Body() body: AddProjectOwner,
     @Param('id', ParseIntPipe) orgId: number,
   ) {
-    const projectOwner = await this.organizationsService.addProjectOwnerToOrg(
-      body.email,
-      orgId,
-    );
-    return projectOwner;
+    return this.organizationsService.addProjectOwnerToOrg(body.email, orgId);
   }
 
   @Post('/create')
@@ -67,7 +55,7 @@ export class OrganizationsController {
     );
 
     await this.organizationsService.createConnection(
-      session.userId,
+      session.passport.user.id,
       organization,
     );
 
