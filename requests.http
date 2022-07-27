@@ -3,9 +3,9 @@ POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-  "email": "test9@example.com",
+  "email": "test10@example.com",
   "password": "12345",
-  "name": "test9",
+  "name": "test10",
   "profilePicture": "00101010101100001101011101100101"
 }
 
@@ -26,7 +26,7 @@ POST http://localhost:3000/organizations/create
 Content-Type: application/json
 
 {
-  "name": "new minta 2 kft"
+  "name": "new minta 312331 kft"
 }
 
 ### Load all organizations accessible to current user
@@ -37,7 +37,7 @@ GET http://localhost:3000/organizations/14
 
 ### Add project owner to selected organization
 ### Can only run if you loaded an organization already.
-POST http://localhost:3000/organizations/addPo/13
+POST http://localhost:3000/organizations/13/addPo
 Content-Type: application/json
 
 {
@@ -46,21 +46,21 @@ Content-Type: application/json
 
 ### Create new project to selected organization.
 ### Can only run if you loaded an organization already.
-POST http://localhost:3000/organizations/14/projects/create
+POST http://localhost:3000/organizations/15/projects/create
 Content-Type: application/json
 
 {
-  "name": "project123"
+  "name": "project15"
 }
 
 ### Delete organization
 DELETE http://localhost:3000/organizations/10
 
 ### List the selected organization's projects.
-GET http://localhost:3000/organizations/14/projects
+GET http://localhost:3000/organizations/16/projects
 
 ### List one project
-GET http://localhost:3000/organizations/14/projects/17
+GET http://localhost:3000/organizations/15/projects/18
 
 ### Delete project
 DELETE http://localhost:3000/organizations/10/projects/13
