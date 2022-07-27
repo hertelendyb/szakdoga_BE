@@ -10,11 +10,13 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
+import { Roles } from 'src/decorators/roles.decorator';
+import { RolesGuard } from 'src/guards/roles.guard';
 import { AddProjectOwner } from './dtos/add-projectOwner.dto';
 import { CreateOrganizationDto } from './dtos/create-organization.dto';
 import { OrganizationsService } from './organizations.service';
 
-@UseGuards(AuthenticatedGuard)
+@UseGuards(AuthenticatedGuard, RolesGuard)
 @Controller('organizations')
 export class OrganizationsController {
   constructor(private organizationsService: OrganizationsService) {}
@@ -26,6 +28,7 @@ export class OrganizationsController {
     );
   }
 
+  @Roles(1)
   @Get('/:id')
   async loadOrganization(
     @Session() session: any,
@@ -37,7 +40,8 @@ export class OrganizationsController {
     );
   }
 
-  @Post('/addPo/:id')
+  @Roles(1)
+  @Post('/:id/addPo/')
   async addProjectOwnerToOrg(
     @Body() body: AddProjectOwner,
     @Param('id', ParseIntPipe) orgId: number,
@@ -62,6 +66,7 @@ export class OrganizationsController {
     return organization;
   }
 
+  @Roles(1)
   @Delete('/:id')
   async deleteOrganization(@Param('id', ParseIntPipe) id: number) {
     return this.organizationsService.deleteOrganization(id);
