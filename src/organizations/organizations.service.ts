@@ -59,8 +59,8 @@ export class OrganizationsService {
     }
   }
 
-  async addProjectOwnerToOrg(email: string, orgId: number) {
-    const user = await this.userRepo.findOne({ email: email });
+  async addUserToOrg(email: string, orgId: number, roleId: number) {
+    const user = await this.userRepo.findOne({ email });
     if (!orgId) {
       throw new NotFoundException(
         'No organization found. Must select one first.',
@@ -80,12 +80,12 @@ export class OrganizationsService {
       );
     }
 
-    const newProjectOwner = this.joinRepo.create({
+    const newUser = this.joinRepo.create({
       userId: user.id,
       organizationId: orgId,
-      roleId: 2,
+      roleId,
     });
-    return this.joinRepo.save(newProjectOwner);
+    return this.joinRepo.save(newUser);
   }
 
   async deleteOrganization(orgId: number) {
