@@ -35,23 +35,48 @@ GET http://localhost:3000/organizations
 ### Load a specific organization accessible to current user
 GET http://localhost:3000/organizations/14
 
-### Add project owner to selected organization
-### Can only run if you loaded an organization already.
-POST http://localhost:3000/organizations/13/addPo
+### Add project owner to organization
+POST http://localhost:3000/organizations/13/add-project-owner
 Content-Type: application/json
 
 {
   "email": "test5@example.com"
 }
 
-### Create new project to selected organization.
-### Can only run if you loaded an organization already.
+### Add contributor to organization
+POST http://localhost:3000/organizations/14/add-contributor
+Content-Type: application/json
+
+{
+  "email": "test10@example.com"
+}
+
+### Create new project.
 POST http://localhost:3000/organizations/15/projects/create
 Content-Type: application/json
 
 {
   "name": "project15"
 }
+
+### Add project owner to project
+POST http://localhost:3000/organizations/14/projects/17/add-project-owner
+Content-Type: application/json
+
+{
+  "email": "test9@example.com"
+}
+
+### Add contributor to project
+POST http://localhost:3000/organizations/14/projects/17/add-contributor
+Content-Type: application/json
+
+{
+  "email": "test8@example.com"
+}
+
+### List contributors
+GET http://localhost:3000/organizations/14/projects/17/contributors
 
 ### Delete organization
 DELETE http://localhost:3000/organizations/10

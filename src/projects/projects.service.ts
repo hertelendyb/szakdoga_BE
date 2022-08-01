@@ -6,6 +6,9 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Organization } from 'src/entities/organization';
 import { Project } from 'src/entities/project';
+import { User } from 'src/entities/user';
+import { UserOrganizationRole } from 'src/entities/user_organization_role';
+import { UserProjectRole } from 'src/entities/user_project_role';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -13,6 +16,11 @@ export class ProjectsService {
   constructor(
     @InjectRepository(Project) private projectRepo: Repository<Project>,
     @InjectRepository(Organization) private orgRepo: Repository<Organization>,
+    @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(UserProjectRole)
+    private userProjectRoleRepo: Repository<UserProjectRole>,
+    @InjectRepository(UserOrganizationRole)
+    private userOrganizationRoleRepo: Repository<UserOrganizationRole>,
   ) {}
 
   async create(name: string, orgId: number) {
@@ -61,6 +69,58 @@ export class ProjectsService {
     }
 
     return project;
+  }
+
+  async addUserToProject(
+    email: string,
+    orgId: number,
+    projectId: number,
+    roleId: number,
+  ) {
+    const user = await this.userRepo.findOne({ email });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    const projectConnection = await this.userProjectRoleRepo.findOne({
+      userId: user.id,
+      projectId,
+    });
+    const organizationConnection = await this.userOrganizationRoleRepo.findOne({
+      userId: user.id,
+      organizationId: orgId,
+    });
+
+    if (projectConnection || organizationConnection) {
+      throw new ForbiddenException(
+        'This user is already member of the organization or the project',
+      );
+    }
+
+    const newUser = this.userProjectRoleRepo.create({
+      userId: user.id,
+      projectId,
+      roleId,
+    });
+    return this.userProjectRoleRepo.save(newUser);
+  }
+
+  async listContributors(organizationId: number, projectId: number) {
+    const orgContributors = await this.userOrganizationRoleRepo.find({
+      where: {
+        organizationId,
+        roleId: 3,
+      },
+    });
+
+    const projectContributors = await this.userProjectRoleRepo.find({
+      where: {
+        projectId,
+        roleId: 3,
+      },
+    });
+
+    return [...orgContributors, ...projectContributors];
   }
 
   async deleteProject(projectId: number) {

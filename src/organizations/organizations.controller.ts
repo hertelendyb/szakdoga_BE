@@ -12,6 +12,7 @@ import {
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { AddContributor } from './dtos/add-contributor.dto';
 import { AddProjectOwner } from './dtos/add-projectOwner.dto';
 import { CreateOrganizationDto } from './dtos/create-organization.dto';
 import { OrganizationsService } from './organizations.service';
@@ -41,12 +42,21 @@ export class OrganizationsController {
   }
 
   @Roles(1)
-  @Post('/:id/addPo/')
+  @Post('/:id/add-project-owner/')
   async addProjectOwnerToOrg(
     @Body() body: AddProjectOwner,
     @Param('id', ParseIntPipe) orgId: number,
   ) {
-    return this.organizationsService.addProjectOwnerToOrg(body.email, orgId);
+    return this.organizationsService.addUserToOrg(body.email, orgId, 2);
+  }
+
+  @Roles(1)
+  @Post('/:id/add-contributor/')
+  async addContributorToOrg(
+    @Body() body: AddContributor,
+    @Param('id', ParseIntPipe) orgId: number,
+  ) {
+    return this.organizationsService.addUserToOrg(body.email, orgId, 3);
   }
 
   @Post('/create')
