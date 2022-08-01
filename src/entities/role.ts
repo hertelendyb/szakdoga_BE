@@ -1,12 +1,4 @@
-import {
-  Column,
-  Entity,
-  JoinTable,
-  ManyToMany,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
-import { Function } from './function';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserOrganizationRole } from './user_organization_role';
 import { UserProjectRole } from './user_project_role';
 
@@ -17,10 +9,6 @@ export class Role {
 
   @Column()
   name: string;
-
-  @ManyToMany(() => Function)
-  @JoinTable()
-  functions: Function[];
 
   @OneToMany(
     () => UserOrganizationRole,
