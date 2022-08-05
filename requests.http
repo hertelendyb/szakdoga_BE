@@ -14,7 +14,7 @@ POST http://localhost:3000/users/login
 Content-Type: application/json
 
 {
-  "email": "test9@example.com",
+  "email": "test1@example.com",
   "password": "12345"
 }
 
@@ -26,7 +26,7 @@ POST http://localhost:3000/organizations/create
 Content-Type: application/json
 
 {
-  "name": "new minta 312331 kft"
+  "name": "minta1 kft"
 }
 
 ### Load all organizations accessible to current user
@@ -52,11 +52,11 @@ Content-Type: application/json
 }
 
 ### Create new project.
-POST http://localhost:3000/organizations/15/projects/create
+POST http://localhost:3000/organizations/1/projects/create
 Content-Type: application/json
 
 {
-  "name": "project15"
+  "name": "project1"
 }
 
 ### Add project owner to project
@@ -91,31 +91,39 @@ GET http://localhost:3000/organizations/15/projects/18
 DELETE http://localhost:3000/organizations/10/projects/13
 
 ### Create task
-POST http://localhost:3000/organizations/14/projects/17/tasks
+POST http://localhost:3000/organizations/1/projects/1/tasks
 Content-Type: application/json
 
 {
-  "name": "task96",
-  "description": "task96 description",
-  "assigneeId": 30,
-  "deadline": "2022-05-12"
+  "name": "task3",
+  "description": "task3 description",
+  "deadline": "2022-05-12",
+  "assigneeId": 3
 }
 
 ### List tasks
-GET http://localhost:3000/organizations/14/projects/17/tasks
+GET http://localhost:3000/organizations/1/projects/1/tasks
 
 ### Create subtask
-POST http://localhost:3000/organizations/10/projects/13/tasks/10
+POST http://localhost:3000/organizations/1/projects/1/tasks/3
 Content-Type: application/json
 
 {
-  "name": "subSubtask",
-  "description": "subSubtask2 description",
-  "deadline": "2019-04-12"
+  "name": "subSubtask3",
+  "description": "subSubtask3 description",
+  "deadline": "2022-04-12"
 }
 
 ### List one task
-GET http://localhost:3000/organizations/10/projects/13/tasks/10
+GET http://localhost:3000/organizations/1/projects/1/tasks/3
 
 ### Delete task
 DELETE http://localhost:3000/organizations/10/projects/13/tasks/7
+
+### Add comment to task
+POST http://localhost:3000/organizations/1/projects/1/tasks/1/add-comment
+Content-Type: application/json
+
+{
+  "text": "ez egy komment"
+}

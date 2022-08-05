@@ -17,7 +17,13 @@ export class TasksInterceptor implements NestInterceptor {
     return next.handle().pipe(
       map((data) => {
         if (data.assignee) {
-          return omit(data, 'assignee.password');
+          omit(data, 'assignee.password');
+        }
+        if (data.author) {
+          omit(data, 'author.password');
+        }
+        if (data.comments) {
+          data.comments.map((comment) => omit(comment, 'author.password'));
         }
         return data;
       }),

@@ -1,4 +1,6 @@
+import { Exclude } from 'class-transformer';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Comment } from './comment';
 import { Task } from './task';
 import { UserOrganizationRole } from './user_organization_role';
 import { UserProjectRole } from './user_project_role';
@@ -31,4 +33,7 @@ export class User {
 
   @OneToMany(() => Task, (task) => task.assignee)
   tasks: Task[];
+
+  @OneToMany(() => Comment, (comment) => comment.author)
+  comments: Comment[];
 }
