@@ -1,5 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { fromUnixTime } from 'date-fns';
+import { Comment } from 'src/entities/comment';
 import { Project } from 'src/entities/project';
 import { Task } from 'src/entities/task';
 import { User } from 'src/entities/user';
@@ -11,6 +13,7 @@ export class TasksService {
     @InjectRepository(Project) private projectRepo: Repository<Project>,
     @InjectRepository(Task) private taskRepo: Repository<Task>,
     @InjectRepository(User) private userRepo: Repository<User>,
+    @InjectRepository(Comment) private commentRepo: Repository<Comment>,
   ) {}
 
   async createTask(
@@ -85,7 +88,13 @@ export class TasksService {
 
     return this.taskRepo.findOne({
       where: { id: taskId },
-      relations: ['parentTask', 'childTasks'],
+      relations: [
+        'parentTask',
+        'childTasks',
+        'comments',
+        'comments.author',
+        'assignee',
+      ],
     });
   }
 
@@ -97,5 +106,23 @@ export class TasksService {
     }
 
     return this.taskRepo.delete({ id: taskId });
+  }
+
+  async addComment(taskId: number, userId: number, text: string) {
+    const task = await this.taskRepo.findOne({ id: taskId });
+    const author = await this.userRepo.findOne({ id: userId });
+
+    if (!task) {
+      throw new NotFoundException('Task not found');
+    }
+
+    const comment = this.commentRepo.create({
+      text,
+      createdAt: new Date(Date.now()),
+      author,
+      task,
+    });
+
+    return this.commentRepo.save(comment);
   }
 }

@@ -5,6 +5,7 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+import { Comment } from './comment';
 import { Project } from './project';
 import { User } from './user';
 
@@ -39,4 +40,7 @@ export class Task {
 
   @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'SET NULL' })
   assignee: User;
+
+  @OneToMany(() => Comment, (comment) => comment.task)
+  comments: Comment[];
 }

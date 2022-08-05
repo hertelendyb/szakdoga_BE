@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Session,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -13,6 +14,7 @@ import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { TasksInterceptor } from 'src/interceptors/tasks.interceptor';
+import { AddCommentDto } from './dtos/add-comment.dto';
 import { CreateTaskDto } from './dtos/create-task.dto';
 import { TasksService } from './tasks.service';
 
@@ -59,6 +61,7 @@ export class TasksController {
   }
 
   @Roles(1, 2, 3)
+  @UseInterceptors(TasksInterceptor)
   @Get('/:taskId')
   async listOneTask(@Param('taskId', ParseIntPipe) taskId: number) {
     return this.taskService.listOneTask(taskId);
@@ -68,5 +71,20 @@ export class TasksController {
   @Delete('/:taskId')
   async deleteTask(@Param('taskId', ParseIntPipe) taskId: number) {
     return this.taskService.deleteTask(taskId);
+  }
+
+  @Roles(1, 2, 3)
+  @UseInterceptors(TasksInterceptor)
+  @Post('/:taskId/add-comment')
+  async addComment(
+    @Body() body: AddCommentDto,
+    @Session() session: any,
+    @Param('taskId', ParseIntPipe) taskId: number,
+  ) {
+    return this.taskService.addComment(
+      taskId,
+      session.passport.user.id,
+      body.text,
+    );
   }
 }
