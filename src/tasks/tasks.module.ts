@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Comment } from 'src/entities/comment';
+import { Log } from 'src/entities/log';
 import { Project } from 'src/entities/project';
 import { Task } from 'src/entities/task';
 import { User } from 'src/entities/user';
@@ -18,6 +19,7 @@ import { TasksService } from './tasks.service';
       UserOrganizationRole,
       UserProjectRole,
       Comment,
+      Log,
     ]),
   ],
   controllers: [TasksController],
