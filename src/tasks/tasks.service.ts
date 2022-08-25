@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { fromUnixTime } from 'date-fns';
 import { Comment } from 'src/entities/comment';
+import { Log } from 'src/entities/log';
 import { Project } from 'src/entities/project';
 import { Task } from 'src/entities/task';
 import { User } from 'src/entities/user';
@@ -14,6 +14,7 @@ export class TasksService {
     @InjectRepository(Task) private taskRepo: Repository<Task>,
     @InjectRepository(User) private userRepo: Repository<User>,
     @InjectRepository(Comment) private commentRepo: Repository<Comment>,
+    @InjectRepository(Log) private logRepo: Repository<Log>,
   ) {}
 
   async createTask(
@@ -22,6 +23,7 @@ export class TasksService {
     deadline: Date,
     assigneeId: number,
     projectId: number,
+    user: User,
   ) {
     const project = await this.projectRepo.findOne({ id: projectId });
     const assignee = assigneeId
@@ -43,7 +45,18 @@ export class TasksService {
       project,
       assignee,
     });
-    return this.taskRepo.save(task);
+
+    await this.taskRepo.save(task);
+
+    const log = this.logRepo.create({
+      text: `${user.name} created this task.`,
+      timestamp: new Date(Date.now()),
+      task,
+    });
+
+    await this.logRepo.save(log);
+
+    return task;
   }
 
   async createSubTask(
@@ -51,6 +64,7 @@ export class TasksService {
     description: string,
     deadline: Date,
     taskId: number,
+    user: User,
   ) {
     const parent = await this.taskRepo.findOne({ id: taskId });
 
@@ -59,8 +73,20 @@ export class TasksService {
     }
 
     const task = this.taskRepo.create({ name, description, deadline });
+
     task.parentTask = parent;
-    return this.taskRepo.save(task);
+
+    await this.taskRepo.save(task);
+
+    const log = this.logRepo.create({
+      text: `${user.name} created this task.`,
+      timestamp: new Date(Date.now()),
+      task,
+    });
+
+    await this.logRepo.save(log);
+
+    return task;
   }
 
   async listTasks(projectId: number) {
@@ -108,13 +134,21 @@ export class TasksService {
     return this.taskRepo.delete({ id: taskId });
   }
 
-  async addComment(taskId: number, userId: number, text: string) {
+  async addComment(taskId: number, user: User, text: string) {
     const task = await this.taskRepo.findOne({ id: taskId });
-    const author = await this.userRepo.findOne({ id: userId });
+    const author = await this.userRepo.findOne({ id: user.id });
 
     if (!task) {
       throw new NotFoundException('Task not found');
     }
+
+    const log = this.logRepo.create({
+      text: `${user.name} added a comment.`,
+      timestamp: new Date(Date.now()),
+      task,
+    });
+
+    await this.logRepo.save(log);
 
     const comment = this.commentRepo.create({
       text,
@@ -124,5 +158,13 @@ export class TasksService {
     });
 
     return this.commentRepo.save(comment);
+  }
+
+  async getLogs(taskId: number) {
+    return this.logRepo.find({
+      where: {
+        task: taskId,
+      },
+    });
   }
 }

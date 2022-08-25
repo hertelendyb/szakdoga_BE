@@ -6,6 +6,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Comment } from './comment';
+import { Log } from './log';
 import { Project } from './project';
 import { User } from './user';
 
@@ -43,4 +44,7 @@ export class Task {
 
   @OneToMany(() => Comment, (comment) => comment.task)
   comments: Comment[];
+
+  @OneToMany(() => Log, (log) => log.task)
+  logs: Log[];
 }

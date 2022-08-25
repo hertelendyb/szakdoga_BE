@@ -3,9 +3,9 @@ POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-  "email": "test10@example.com",
+  "email": "test2@example.com",
   "password": "12345",
-  "name": "test10",
+  "name": "test2",
   "profilePicture": "00101010101100001101011101100101"
 }
 
@@ -97,15 +97,15 @@ Content-Type: application/json
 {
   "name": "task3",
   "description": "task3 description",
-  "deadline": "2022-05-12",
-  "assigneeId": 3
+  "deadline": "2022-07-12",
+  "assigneeId": 2
 }
 
 ### List tasks
 GET http://localhost:3000/organizations/1/projects/1/tasks
 
 ### Create subtask
-POST http://localhost:3000/organizations/1/projects/1/tasks/3
+POST http://localhost:3000/organizations/1/projects/1/tasks/9
 Content-Type: application/json
 
 {
@@ -115,15 +115,18 @@ Content-Type: application/json
 }
 
 ### List one task
-GET http://localhost:3000/organizations/1/projects/1/tasks/3
+GET http://localhost:3000/organizations/1/projects/1/tasks/2
 
 ### Delete task
-DELETE http://localhost:3000/organizations/10/projects/13/tasks/7
+DELETE http://localhost:3000/organizations/1/projects/1/tasks/1
 
 ### Add comment to task
-POST http://localhost:3000/organizations/1/projects/1/tasks/1/add-comment
+POST http://localhost:3000/organizations/1/projects/1/tasks/2/add-comment
 Content-Type: application/json
 
 {
-  "text": "ez egy komment"
+  "text": "ez egy masik komment"
 }
+
+### Get task logs
+GET http://localhost:3000/organizations/1/projects/1/tasks/10/logs

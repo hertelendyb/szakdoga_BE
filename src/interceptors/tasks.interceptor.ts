@@ -16,6 +16,9 @@ export class TasksInterceptor implements NestInterceptor {
     }
     return next.handle().pipe(
       map((data) => {
+        if (data.length) {
+          data.map((task) => omit(task, 'assignee.password'));
+        }
         if (data.assignee) {
           omit(data, 'assignee.password');
         }

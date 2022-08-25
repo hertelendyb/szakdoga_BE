@@ -24,6 +24,7 @@ export class TasksController {
   constructor(private taskService: TasksService) {}
 
   @Roles(1, 2, 3)
+  @UseInterceptors(TasksInterceptor)
   @Get('/')
   async listTasks(@Param('projectId', ParseIntPipe) projectId: number) {
     return this.taskService.listTasks(projectId);
@@ -34,6 +35,7 @@ export class TasksController {
   @Post('/')
   async createTask(
     @Body() body: CreateTaskDto,
+    @Session() session: any,
     @Param('projectId', ParseIntPipe) projectId: number,
   ) {
     return this.taskService.createTask(
@@ -42,6 +44,7 @@ export class TasksController {
       body.deadline,
       body.assigneeId,
       projectId,
+      session.passport.user,
     );
   }
 
@@ -50,6 +53,7 @@ export class TasksController {
   @Post('/:taskId')
   async createSubTask(
     @Body() body: CreateTaskDto,
+    @Session() session: any,
     @Param('taskId', ParseIntPipe) taskId: number,
   ) {
     return this.taskService.createSubTask(
@@ -57,6 +61,7 @@ export class TasksController {
       body.description,
       body.deadline,
       taskId,
+      session.passport.user,
     );
   }
 
@@ -67,7 +72,7 @@ export class TasksController {
     return this.taskService.listOneTask(taskId);
   }
 
-  @Roles(1, 2, 3)
+  @Roles(1, 2)
   @Delete('/:taskId')
   async deleteTask(@Param('taskId', ParseIntPipe) taskId: number) {
     return this.taskService.deleteTask(taskId);
@@ -83,8 +88,15 @@ export class TasksController {
   ) {
     return this.taskService.addComment(
       taskId,
-      session.passport.user.id,
+      session.passport.user,
       body.text,
     );
+  }
+
+  @Roles(1, 2, 3)
+  @UseInterceptors(TasksInterceptor)
+  @Get('/:taskId/logs')
+  async getLogs(@Param('taskId', ParseIntPipe) taskId: number) {
+    return this.taskService.getLogs(taskId);
   }
 }
