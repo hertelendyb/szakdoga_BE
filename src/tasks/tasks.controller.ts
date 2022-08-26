@@ -62,8 +62,20 @@ export class TasksController {
       body.description,
       body.deadline,
       taskId,
+      body.assigneeId,
       session.passport.user,
     );
+  }
+
+  @Roles(1, 2, 3)
+  @UseInterceptors(TasksInterceptor)
+  @Patch('/:taskId')
+  async editTask(
+    @Body() body: Partial<CreateTaskDto>,
+    @Session() session: any,
+    @Param('taskId', ParseIntPipe) taskId: number,
+  ) {
+    return this.taskService.editTask(taskId, session.passport.user, body);
   }
 
   @Roles(1, 2, 3)

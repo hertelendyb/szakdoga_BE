@@ -17,12 +17,16 @@ export class UserProjectRole {
   @Column()
   projectId!: number;
 
-  @ManyToOne(() => User, (user) => user.userProjectRole)
+  @ManyToOne(() => User, (user) => user.userProjectRole, {
+    onDelete: 'CASCADE',
+  })
   user!: User;
 
   @ManyToOne(() => Role, (role) => role.userProjectRole)
   role!: Role;
 
-  @ManyToOne(() => Project, (project) => project.userProjectRole)
+  @ManyToOne(() => Project, (project) => project.userProjectRole, {
+    onDelete: 'CASCADE',
+  })
   project!: Project;
 }

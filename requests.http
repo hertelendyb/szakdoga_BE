@@ -115,10 +115,10 @@ Content-Type: application/json
 }
 
 ### List one task
-GET http://localhost:3000/organizations/1/projects/1/tasks/2
+GET http://localhost:3000/organizations/1/projects/1/tasks/10
 
 ### Delete task
-DELETE http://localhost:3000/organizations/1/projects/1/tasks/1
+DELETE http://localhost:3000/organizations/1/projects/1/tasks/2
 
 ### Add comment to task
 POST http://localhost:3000/organizations/1/projects/1/tasks/2/add-comment

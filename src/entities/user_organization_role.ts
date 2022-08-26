@@ -24,7 +24,9 @@ export class UserOrganizationRole {
   @Column()
   organizationId!: number;
 
-  @ManyToOne(() => User, (user) => user.userOrganizationRole)
+  @ManyToOne(() => User, (user) => user.userOrganizationRole, {
+    onDelete: 'CASCADE',
+  })
   user!: User;
 
   @ManyToOne(() => Role, (role) => role.userOrganizationRole)

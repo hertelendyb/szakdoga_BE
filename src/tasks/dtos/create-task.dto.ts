@@ -1,4 +1,10 @@
-import { IsDate, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsDate,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateTaskDto {
   @IsString()
@@ -14,4 +20,12 @@ export class CreateTaskDto {
   @IsOptional()
   @IsNumber()
   assigneeId: number;
+
+  @IsOptional()
+  @IsBoolean()
+  done: boolean;
+
+  @IsOptional()
+  @IsNumber()
+  order: number;
 }
