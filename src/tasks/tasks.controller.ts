@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
   Session,
   UseGuards,
@@ -88,6 +89,36 @@ export class TasksController {
   ) {
     return this.taskService.addComment(
       taskId,
+      session.passport.user,
+      body.text,
+    );
+  }
+
+  @Roles(1, 2, 3)
+  @Delete('/:taskId/delete-comment/:commentId')
+  async deleteComment(
+    @Session() session: any,
+    @Param('taskId', ParseIntPipe) taskId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ) {
+    return this.taskService.deleteComment(
+      taskId,
+      commentId,
+      session.passport.user,
+    );
+  }
+
+  @Roles(1, 2, 3)
+  @Patch('/:taskId/edit-comment/:commentId')
+  async editComment(
+    @Body() body: Partial<AddCommentDto>,
+    @Session() session: any,
+    @Param('taskId', ParseIntPipe) taskId: number,
+    @Param('commentId', ParseIntPipe) commentId: number,
+  ) {
+    return this.taskService.editComment(
+      taskId,
+      commentId,
       session.passport.user,
       body.text,
     );

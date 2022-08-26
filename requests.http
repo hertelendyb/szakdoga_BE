@@ -125,8 +125,19 @@ POST http://localhost:3000/organizations/1/projects/1/tasks/2/add-comment
 Content-Type: application/json
 
 {
-  "text": "ez egy masik komment"
+  "text": "ez egy 3 komment"
 }
 
+### Edit comment
+PATCH http://localhost:3000/organizations/1/projects/1/tasks/2/edit-comment/11
+Content-Type: application/json
+
+{
+  "text": "ez egy masik szerkesztett komment"
+}
+
+### Delete comment
+DELETE http://localhost:3000/organizations/1/projects/1/tasks/2/delete-comment/10
+
 ### Get task logs
-GET http://localhost:3000/organizations/1/projects/1/tasks/10/logs
+GET http://localhost:3000/organizations/1/projects/1/tasks/2/logs
