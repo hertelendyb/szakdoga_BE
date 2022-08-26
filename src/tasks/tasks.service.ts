@@ -10,6 +10,7 @@ import { Project } from 'src/entities/project';
 import { Task } from 'src/entities/task';
 import { User } from 'src/entities/user';
 import { Repository } from 'typeorm';
+import { CreateTaskDto } from './dtos/create-task.dto';
 
 @Injectable()
 export class TasksService {
@@ -68,15 +69,24 @@ export class TasksService {
     description: string,
     deadline: Date,
     taskId: number,
+    assigneeId: number,
     user: User,
   ) {
     const parent = await this.taskRepo.findOne({ id: taskId });
+    const assignee = assigneeId
+      ? await this.userRepo.findOne({ id: assigneeId })
+      : null;
 
     if (!parent) {
       throw new NotFoundException('Parent task not found');
     }
 
-    const task = this.taskRepo.create({ name, description, deadline });
+    const task = this.taskRepo.create({
+      name,
+      description,
+      deadline,
+      assignee,
+    });
 
     task.parentTask = parent;
 
@@ -84,6 +94,43 @@ export class TasksService {
 
     const log = this.logRepo.create({
       text: `${user.name} created this task.`,
+      timestamp: new Date(Date.now()),
+      task,
+    });
+
+    await this.logRepo.save(log);
+
+    return task;
+  }
+
+  async editTask(taskId: number, user: User, data: Partial<CreateTaskDto>) {
+    const task = await this.taskRepo.findOne({ id: taskId });
+
+    const { name, description, deadline, assigneeId, done, order } = data;
+
+    if (name) {
+      task.name = name;
+    }
+    if (description) {
+      task.description = description;
+    }
+    if (deadline) {
+      task.deadline = deadline;
+    }
+    if (assigneeId) {
+      task.assignee = await this.userRepo.findOne({ id: assigneeId });
+    }
+    if (done) {
+      task.done = done;
+    }
+    if (order) {
+      task.order = order;
+    }
+
+    await this.taskRepo.save(task);
+
+    const log = this.logRepo.create({
+      text: `${user.name} edited this task.`,
       timestamp: new Date(Date.now()),
       task,
     });
