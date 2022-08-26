@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ForbiddenException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Comment } from 'src/entities/comment';
 import { Log } from 'src/entities/log';
@@ -158,6 +162,63 @@ export class TasksService {
     });
 
     return this.commentRepo.save(comment);
+  }
+
+  async deleteComment(taskId: number, commentId: number, user: User) {
+    const task = await this.taskRepo.findOne({
+      where: { id: taskId },
+    });
+    const comment = await this.commentRepo.findOne({
+      where: { id: commentId },
+      relations: ['author'],
+    });
+    if (comment.author.id !== user.id) {
+      throw new ForbiddenException('You can only delete your own comments');
+    }
+
+    await this.commentRepo.delete({ id: commentId });
+
+    const log = this.logRepo.create({
+      text: `${user.name} deleted a comment.`,
+      timestamp: new Date(Date.now()),
+      task,
+    });
+
+    await this.logRepo.save(log);
+
+    return this.commentRepo.find({ where: { task: taskId } });
+  }
+
+  async editComment(
+    taskId: number,
+    commentId: number,
+    user: User,
+    text: string,
+  ) {
+    const task = await this.taskRepo.findOne({
+      where: { id: taskId },
+    });
+    const comment = await this.commentRepo.findOne({
+      where: { id: commentId },
+      relations: ['author'],
+    });
+    if (comment.author.id !== user.id) {
+      throw new ForbiddenException('You can only edit your own comments');
+    }
+
+    comment.text = text;
+
+    await this.commentRepo.save(comment);
+
+    const log = this.logRepo.create({
+      text: `${user.name} edited a comment.`,
+      timestamp: new Date(Date.now()),
+      task,
+    });
+
+    await this.logRepo.save(log);
+
+    return this.commentRepo.find({ where: { task: taskId } });
   }
 
   async getLogs(taskId: number) {
