@@ -36,4 +36,8 @@ export class UsersService {
   async getUser(email: string) {
     return this.repo.findOne({ email });
   }
+
+  async deleteUser(userId: number) {
+    return this.repo.delete({ id: userId });
+  }
 }

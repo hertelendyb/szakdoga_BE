@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { Roles } from 'src/decorators/roles.decorator';
+import { User } from 'src/entities/user';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { AddContributor } from 'src/organizations/dtos/add-contributor.dto';
 import { AddProjectOwner } from 'src/organizations/dtos/add-projectOwner.dto';
@@ -70,6 +71,15 @@ export class ProjectsController {
       projectId,
       3,
     );
+  }
+
+  @Roles(1, 2)
+  @Delete('/:projectId/remove-user')
+  async removeUserFromProject(
+    @Body() body: Partial<User>,
+    @Param('projectId', ParseIntPipe) projectId: number,
+  ) {
+    return this.projectsService.removeUserFromProject(body.id, projectId);
   }
 
   @Roles(1, 2)
