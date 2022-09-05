@@ -1,9 +1,11 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Post,
   Request,
+  Session,
   UseGuards,
 } from '@nestjs/common';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
@@ -34,5 +36,10 @@ export class UsersController {
   logout(@Request() req) {
     req.session.destroy();
     return { msg: 'The user session has ended' };
+  }
+
+  @Delete('/delete')
+  async deleteUser(@Session() session: any) {
+    return this.usersService.deleteUser(session.passport.user.id);
   }
 }

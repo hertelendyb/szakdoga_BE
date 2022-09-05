@@ -88,6 +88,10 @@ export class OrganizationsService {
     return this.joinRepo.save(newUser);
   }
 
+  async removeUserFromOrg(userId: number, orgId: number) {
+    return this.joinRepo.delete({ userId, organizationId: orgId });
+  }
+
   async deleteOrganization(orgId: number) {
     const org = await this.repo.findOne({ id: orgId });
 

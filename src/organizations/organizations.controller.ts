@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
 import { Roles } from 'src/decorators/roles.decorator';
+import { User } from 'src/entities/user';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { AddContributor } from './dtos/add-contributor.dto';
 import { AddProjectOwner } from './dtos/add-projectOwner.dto';
@@ -57,6 +58,15 @@ export class OrganizationsController {
     @Param('id', ParseIntPipe) orgId: number,
   ) {
     return this.organizationsService.addUserToOrg(body.email, orgId, 3);
+  }
+
+  @Roles(1)
+  @Delete('/:id/remove-user')
+  async removeUserFromOrg(
+    @Body() body: Partial<User>,
+    @Param('id', ParseIntPipe) orgId: number,
+  ) {
+    return this.organizationsService.removeUserFromOrg(body.id, orgId);
   }
 
   @Post('/create')

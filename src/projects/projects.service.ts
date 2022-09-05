@@ -105,6 +105,10 @@ export class ProjectsService {
     return this.userProjectRoleRepo.save(newUser);
   }
 
+  async removeUserFromProject(userId: number, projectId: number) {
+    return this.userProjectRoleRepo.delete({ userId, projectId });
+  }
+
   async listContributors(organizationId: number, projectId: number) {
     const orgContributors = await this.userOrganizationRoleRepo.find({
       where: {
