@@ -1,4 +1,3 @@
-import { Exclude } from 'class-transformer';
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Comment } from './comment';
 import { Task } from './task';
@@ -19,7 +18,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ type: 'blob', nullable: true })
+  @Column({ type: 'longtext', nullable: true })
   profilePicture: string;
 
   @OneToMany(

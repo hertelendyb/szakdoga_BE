@@ -9,12 +9,16 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+import { ProjectsService } from 'src/projects/projects.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 
-@Controller('users')
+@Controller('api/users')
 export class UsersController {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private projectsService: ProjectsService,
+  ) {}
 
   @Post('/signup')
   async createUser(@Body() body: CreateUserDto) {
@@ -30,6 +34,16 @@ export class UsersController {
   @Post('/login')
   async login(@Request() req) {
     return req.user;
+  }
+
+  @Get('/me')
+  async me(@Session() session: any) {
+    return this.usersService.me(session.passport.user.id);
+  }
+
+  @Get('/myProjects')
+  async getMyProjects(@Session() session: any) {
+    return this.projectsService.listMyProjects(session.passport.user.id);
   }
 
   @Get('/logout')

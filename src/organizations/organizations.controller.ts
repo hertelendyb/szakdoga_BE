@@ -19,7 +19,7 @@ import { CreateOrganizationDto } from './dtos/create-organization.dto';
 import { OrganizationsService } from './organizations.service';
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('organizations')
+@Controller('api/organizations')
 export class OrganizationsController {
   constructor(private organizationsService: OrganizationsService) {}
 

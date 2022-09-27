@@ -20,7 +20,7 @@ import { CreateTaskDto } from './dtos/create-task.dto';
 import { TasksService } from './tasks.service';
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('organizations/:id/projects/:projectId/tasks')
+@Controller('api/organizations/:id/projects/:projectId/tasks')
 export class TasksController {
   constructor(private taskService: TasksService) {}
 
