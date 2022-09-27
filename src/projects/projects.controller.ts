@@ -18,7 +18,7 @@ import { CreateProjectDto } from './dtos/create-project.dto';
 import { ProjectsService } from './projects.service';
 
 @UseGuards(AuthenticatedGuard, RolesGuard)
-@Controller('organizations/:id/projects')
+@Controller('api/organizations/:id/projects')
 export class ProjectsController {
   constructor(private projectsService: ProjectsService) {}
 
@@ -34,7 +34,7 @@ export class ProjectsController {
   @Roles(1)
   @Get('/')
   async listProjects(@Param('id', ParseIntPipe) orgId: number) {
-    return this.projectsService.getMyProjects(orgId);
+    return this.projectsService.getProjects(orgId);
   }
 
   @Roles(1, 2)

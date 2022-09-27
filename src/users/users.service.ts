@@ -40,4 +40,8 @@ export class UsersService {
   async deleteUser(userId: number) {
     return this.repo.delete({ id: userId });
   }
+
+  async me(userId: number) {
+    return this.repo.findOne({ id: userId });
+  }
 }

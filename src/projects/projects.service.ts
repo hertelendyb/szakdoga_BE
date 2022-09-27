@@ -45,7 +45,7 @@ export class ProjectsService {
     return this.projectRepo.save(project);
   }
 
-  async getMyProjects(orgId: number) {
+  async getProjects(orgId: number) {
     if (!orgId) {
       throw new NotFoundException(
         'Organization not found. Please load an organization.',
@@ -56,6 +56,16 @@ export class ProjectsService {
     });
 
     return projects.filter((project) => project.organization.id === orgId);
+  }
+
+  async listMyProjects(id: number) {
+    const connections = await this.userProjectRoleRepo.find({ userId: id });
+    const projectIDs = connections.map((connection) => connection.projectId);
+    if (projectIDs.length > 0) {
+      return this.projectRepo.findByIds(projectIDs);
+    } else {
+      return 'No projects found';
+    }
   }
 
   async getProject(projectId: number) {

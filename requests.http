@@ -1,5 +1,5 @@
 ### Signup new user
-POST http://localhost:3000/users/signup
+POST http://localhost:3000/api/users/signup
 Content-Type: application/json
 
 {
@@ -10,23 +10,23 @@ Content-Type: application/json
 }
 
 ### Login user
-POST http://localhost:3000/users/login
+POST http://localhost:3000/api/users/login
 Content-Type: application/json
 
 {
-  "email": "test1@example.com",
+  "email": "test4@example.com",
   "password": "12345"
 }
 
 ### Logout user
-GET http://localhost:3000/users/logout
+GET http://localhost:3000/api/users/logout
 
 ### Delete user
-DELETE http://localhost:3000/users/delete
+DELETE http://localhost:3000/api/users/delete
 
 
 ### Create new organization
-POST http://localhost:3000/organizations/create
+POST http://localhost:3000/api/organizations/create
 Content-Type: application/json
 
 {
@@ -34,13 +34,16 @@ Content-Type: application/json
 }
 
 ### Load all organizations accessible to current user
-GET http://localhost:3000/organizations
+GET http://localhost:3000/api/organizations
+
+### Load all projects accessible to current user
+GET http://localhost:3000/api/users/myProjects
 
 ### Load a specific organization accessible to current user
-GET http://localhost:3000/organizations/14
+GET http://localhost:3000/api/organizations/14
 
 ### Add project owner to organization
-POST http://localhost:3000/organizations/14/add-project-owner
+POST http://localhost:3000/api/organizations/14/add-project-owner
 Content-Type: application/json
 
 {
@@ -48,7 +51,7 @@ Content-Type: application/json
 }
 
 ### Add contributor to organization
-POST http://localhost:3000/organizations/1/add-contributor
+POST http://localhost:3000/api/organizations/1/add-contributor
 Content-Type: application/json
 
 {
@@ -56,7 +59,7 @@ Content-Type: application/json
 }
 
 ### Remove user from organization
-DELETE http://localhost:3000/organizations/1/remove-user
+DELETE http://localhost:3000/api/organizations/1/remove-user
 Content-Type: application/json
 
 {
@@ -64,15 +67,15 @@ Content-Type: application/json
 }
 
 ### Create new project.
-POST http://localhost:3000/organizations/1/projects/create
+POST http://localhost:3000/api/organizations/1/projects/create
 Content-Type: application/json
 
 {
-  "name": "project2"
+  "name": "project3"
 }
 
 ### Add project owner to project
-POST http://localhost:3000/organizations/1/projects/2/add-project-owner
+POST http://localhost:3000/api/organizations/1/projects/2/add-project-owner
 Content-Type: application/json
 
 {
@@ -80,15 +83,15 @@ Content-Type: application/json
 }
 
 ### Add contributor to project
-POST http://localhost:3000/organizations/1/projects/1/add-contributor
+POST http://localhost:3000/api/organizations/1/projects/1/add-contributor
 Content-Type: application/json
 
 {
-  "email": "test3@example.com"
+  "email": "test2@example.com"
 }
 
 ### Remove user from projects
-DELETE http://localhost:3000/organizations/1/projects/1/remove-user
+DELETE http://localhost:3000/api/organizations/1/projects/1/remove-user
 Content-Type: application/json
 
 {
@@ -96,22 +99,22 @@ Content-Type: application/json
 }
 
 ### List contributors
-GET http://localhost:3000/organizations/1/projects/1/contributors
+GET http://localhost:3000/api/organizations/1/projects/1/contributors
 
 ### Delete organization
-DELETE http://localhost:3000/organizations/10
+DELETE http://localhost:3000/api/organizations/10
 
 ### List the selected organization's projects.
-GET http://localhost:3000/organizations/16/projects
+GET http://localhost:3000/api/organizations/16/projects
 
 ### List one project
-GET http://localhost:3000/organizations/15/projects/18
+GET http://localhost:3000/api/organizations/15/projects/18
 
 ### Delete project
-DELETE http://localhost:3000/organizations/1/projects/2
+DELETE http://localhost:3000/api/organizations/1/projects/2
 
 ### Create task
-POST http://localhost:3000/organizations/1/projects/1/tasks
+POST http://localhost:3000/api/organizations/1/projects/1/tasks
 Content-Type: application/json
 
 {
@@ -122,10 +125,10 @@ Content-Type: application/json
 }
 
 ### List tasks
-GET http://localhost:3000/organizations/1/projects/1/tasks
+GET http://localhost:3000/api/organizations/1/projects/1/tasks
 
 ### Create subtask
-POST http://localhost:3000/organizations/1/projects/1/tasks/9
+POST http://localhost:3000/api/organizations/1/projects/1/tasks/9
 Content-Type: application/json
 
 {
@@ -136,7 +139,7 @@ Content-Type: application/json
 }
 
 ### Edit task
-PATCH http://localhost:3000/organizations/1/projects/1/tasks/4
+PATCH http://localhost:3000/api/organizations/1/projects/1/tasks/4
 Content-Type: application/json
 
 {
@@ -144,13 +147,13 @@ Content-Type: application/json
 }
 
 ### List one task
-GET http://localhost:3000/organizations/1/projects/1/tasks/3
+GET http://localhost:3000/api/organizations/1/projects/1/tasks/3
 
 ### Delete task
-DELETE http://localhost:3000/organizations/1/projects/1/tasks/2
+DELETE http://localhost:3000/api/organizations/1/projects/1/tasks/2
 
 ### Add comment to task
-POST http://localhost:3000/organizations/1/projects/1/tasks/3/add-comment
+POST http://localhost:3000/api/organizations/1/projects/1/tasks/3/add-comment
 Content-Type: application/json
 
 {
@@ -158,7 +161,7 @@ Content-Type: application/json
 }
 
 ### Edit comment
-PATCH http://localhost:3000/organizations/1/projects/1/tasks/2/edit-comment/11
+PATCH http://localhost:3000/api/organizations/1/projects/1/tasks/2/edit-comment/11
 Content-Type: application/json
 
 {
@@ -166,7 +169,7 @@ Content-Type: application/json
 }
 
 ### Delete comment
-DELETE http://localhost:3000/organizations/1/projects/1/tasks/2/delete-comment/10
+DELETE http://localhost:3000/api/organizations/1/projects/1/tasks/2/delete-comment/10
 
 ### Get task logs
-GET http://localhost:3000/organizations/1/projects/1/tasks/2/logs
+GET http://localhost:3000/api/organizations/1/projects/1/tasks/2/logs
