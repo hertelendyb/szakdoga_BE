@@ -6,6 +6,7 @@ import {
   Post,
   Request,
   Session,
+  UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
@@ -38,6 +39,9 @@ export class UsersController {
 
   @Get('/me')
   async me(@Session() session: any) {
+    if (!session.passport) {
+      throw new UnauthorizedException();
+    }
     return this.usersService.me(session.passport.user.id);
   }
 
