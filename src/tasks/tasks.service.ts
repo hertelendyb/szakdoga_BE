@@ -120,7 +120,7 @@ export class TasksService {
     if (assigneeId) {
       task.assignee = await this.userRepo.findOne({ id: assigneeId });
     }
-    if (done) {
+    if (done === false || done === true) {
       task.done = done;
     }
     if (order) {
