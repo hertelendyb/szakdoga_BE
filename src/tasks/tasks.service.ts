@@ -27,6 +27,7 @@ export class TasksService {
     description: string,
     deadline: Date,
     assigneeId: number,
+    order: number,
     projectId: number,
     user: User,
   ) {
@@ -49,6 +50,7 @@ export class TasksService {
       deadline,
       project,
       assignee,
+      order,
     });
 
     await this.taskRepo.save(task);

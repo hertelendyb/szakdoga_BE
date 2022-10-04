@@ -125,6 +125,7 @@ export class ProjectsService {
         organizationId,
         roleId: 3,
       },
+      relations: ['user'],
     });
 
     const projectContributors = await this.userProjectRoleRepo.find({
@@ -132,6 +133,7 @@ export class ProjectsService {
         projectId,
         roleId: 3,
       },
+      relations: ['user'],
     });
 
     return [...orgContributors, ...projectContributors];
