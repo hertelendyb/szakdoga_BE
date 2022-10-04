@@ -44,6 +44,7 @@ export class TasksController {
       body.description,
       body.deadline,
       body.assigneeId,
+      body.order,
       projectId,
       session.passport.user,
     );
