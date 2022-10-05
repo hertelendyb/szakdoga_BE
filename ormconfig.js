@@ -4,7 +4,7 @@ module.exports = {
   port: 3306,
   username: 'root',
   password: 'root',
-  database: 'szakdogateszt',
+  database: 'szakdoga',
   entities: ['**/entities/*.js'],
   synchronize: true,
 };

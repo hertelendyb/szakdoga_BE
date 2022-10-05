@@ -62,7 +62,9 @@ export class ProjectsService {
     const connections = await this.userProjectRoleRepo.find({ userId: id });
     const projectIDs = connections.map((connection) => connection.projectId);
     if (projectIDs.length > 0) {
-      return this.projectRepo.findByIds(projectIDs);
+      return this.projectRepo.findByIds(projectIDs, {
+        relations: ['organization'],
+      });
     } else {
       return 'No projects found';
     }
@@ -71,7 +73,7 @@ export class ProjectsService {
   async getProject(projectId: number) {
     const project = await this.projectRepo.findOne({
       where: { id: projectId },
-      relations: ['tasks'],
+      relations: ['tasks', 'organization'],
     });
 
     if (!project) {
