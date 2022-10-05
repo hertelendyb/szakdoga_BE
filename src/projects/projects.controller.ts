@@ -37,7 +37,7 @@ export class ProjectsController {
     return this.projectsService.getProjects(orgId);
   }
 
-  @Roles(1, 2)
+  @Roles(1, 2, 3)
   @Get('/:projectId')
   async listOneProject(@Param('projectId', ParseIntPipe) projectId: number) {
     return this.projectsService.getProject(projectId);
@@ -82,7 +82,7 @@ export class ProjectsController {
     return this.projectsService.removeUserFromProject(body.id, projectId);
   }
 
-  @Roles(1, 2)
+  @Roles(1, 2, 3)
   @Get('/:projectId/contributors/')
   async listContributors(
     @Param('id', ParseIntPipe) orgId: number,
