@@ -170,6 +170,7 @@ export class TasksService {
       relations: [
         'parentTask',
         'childTasks',
+        'childTasks.childTasks',
         'comments',
         'comments.author',
         'assignee',
