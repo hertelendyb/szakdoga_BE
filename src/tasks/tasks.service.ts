@@ -142,6 +142,28 @@ export class TasksService {
     return task;
   }
 
+  async moveTask(taskId: number, user: User, data: Partial<CreateTaskDto>) {
+    const task = await this.taskRepo.findOne({ id: taskId });
+    const { projectId } = data;
+    const project = await this.projectRepo.findOne({ id: projectId });
+
+    task.assignee = null;
+    task.order = null;
+    task.project = project;
+
+    await this.taskRepo.save(task);
+
+    const log = this.logRepo.create({
+      text: `${user.name} moved this task.`,
+      timestamp: new Date(Date.now()),
+      task,
+    });
+
+    await this.logRepo.save(log);
+
+    return task;
+  }
+
   async listTasks(projectId: number) {
     const project = await this.projectRepo.findOne({ id: projectId });
 

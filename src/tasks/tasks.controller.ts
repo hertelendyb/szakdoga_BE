@@ -81,6 +81,17 @@ export class TasksController {
 
   @Roles(1, 2, 3)
   @UseInterceptors(TasksInterceptor)
+  @Patch('/:taskId/move')
+  async moveTask(
+    @Body() body: Partial<CreateTaskDto>,
+    @Session() session: any,
+    @Param('taskId', ParseIntPipe) taskId: number,
+  ) {
+    return this.taskService.moveTask(taskId, session.passport.user, body);
+  }
+
+  @Roles(1, 2, 3)
+  @UseInterceptors(TasksInterceptor)
   @Get('/:taskId')
   async listOneTask(@Param('taskId', ParseIntPipe) taskId: number) {
     return this.taskService.listOneTask(taskId);
