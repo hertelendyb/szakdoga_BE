@@ -30,7 +30,7 @@ export class OrganizationsController {
     );
   }
 
-  @Roles(1)
+  @Roles(1, 2, 3)
   @Get('/:id')
   async loadOrganization(
     @Session() session: any,

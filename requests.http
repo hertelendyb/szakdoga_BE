@@ -146,6 +146,14 @@ Content-Type: application/json
   "done": false
 }
 
+### Move task
+PATCH http://localhost:3000/api/organizations/1/projects/1/tasks/8/move
+Content-Type: application/json
+
+{
+  "projectId": 3
+}
+
 ### List one task
 GET http://localhost:3000/api/organizations/1/projects/1/tasks/3
 
@@ -153,11 +161,11 @@ GET http://localhost:3000/api/organizations/1/projects/1/tasks/3
 DELETE http://localhost:3000/api/organizations/1/projects/1/tasks/2
 
 ### Add comment to task
-POST http://localhost:3000/api/organizations/1/projects/1/tasks/3/add-comment
+POST http://localhost:3000/api/organizations/1/projects/1/tasks/9/add-comment
 Content-Type: application/json
 
 {
-  "text": "ez egyasdasdasd komment"
+  "text": "komment 2"
 }
 
 ### Edit comment

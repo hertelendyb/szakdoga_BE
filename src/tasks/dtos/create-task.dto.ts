@@ -28,4 +28,8 @@ export class CreateTaskDto {
   @IsOptional()
   @IsNumber()
   order: number;
+
+  @IsOptional()
+  @IsNumber()
+  projectId: number;
 }
