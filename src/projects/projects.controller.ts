@@ -43,7 +43,7 @@ export class ProjectsController {
     return this.projectsService.getProject(projectId);
   }
 
-  @Roles(1)
+  @Roles(1, 2)
   @Post('/:projectId/add-project-owner/')
   async addProjectOwnerToProject(
     @Body() body: AddProjectOwner,

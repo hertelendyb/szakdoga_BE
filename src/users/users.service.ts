@@ -3,10 +3,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entities/user';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { UserProjectRole } from 'src/entities/user_project_role';
+import { UserOrganizationRole } from 'src/entities/user_organization_role';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private repo: Repository<User>) {}
+  constructor(
+    @InjectRepository(User) private repo: Repository<User>,
+    @InjectRepository(UserProjectRole)
+    private userProjectRoleRepo: Repository<UserProjectRole>,
+    @InjectRepository(UserOrganizationRole)
+    private userOrganizationRoleRepo: Repository<UserOrganizationRole>,
+  ) {}
 
   async signup(
     email: string,
@@ -42,6 +50,13 @@ export class UsersService {
   }
 
   async me(userId: number) {
-    return this.repo.findOne({ id: userId });
+    const user = await this.repo.findOne({ id: userId });
+    const orgPermissions = await this.userOrganizationRoleRepo.find({ userId });
+    const projectPermissions = await this.userProjectRoleRepo.find({ userId });
+    return {
+      user: { ...user },
+      orgPermissions,
+      projectPermissions,
+    };
   }
 }
