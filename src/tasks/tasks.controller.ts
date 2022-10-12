@@ -79,7 +79,7 @@ export class TasksController {
     return this.taskService.editTask(taskId, session.passport.user, body);
   }
 
-  @Roles(1, 2, 3)
+  @Roles(1, 2)
   @UseInterceptors(TasksInterceptor)
   @Patch('/:taskId/move')
   async moveTask(

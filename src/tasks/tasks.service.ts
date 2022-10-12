@@ -150,6 +150,7 @@ export class TasksService {
     task.assignee = null;
     task.order = null;
     task.project = project;
+    task.parentTask = null;
 
     await this.taskRepo.save(task);
 
