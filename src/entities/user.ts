@@ -18,7 +18,7 @@ export class User {
   @Column()
   name: string;
 
-  @Column({ type: 'longtext', nullable: true })
+  @Column({ type: 'mediumtext', nullable: true })
   profilePicture: string;
 
   @OneToMany(

@@ -1,9 +1,16 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  Index,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Project } from './project';
 import { Role } from './role';
 import { User } from './user';
 
 @Entity()
+@Index(['userId', 'projectId'], { unique: true })
 export class UserProjectRole {
   @PrimaryGeneratedColumn()
   id: number;

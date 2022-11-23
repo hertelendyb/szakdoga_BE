@@ -28,8 +28,8 @@ export class UsersService {
       throw new BadRequestException('email already exists');
     }
 
-    const saltOrRounds = 10;
-    const hashedPassword = await bcrypt.hash(password, saltOrRounds);
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
 
     const user = this.repo.create({
       email,

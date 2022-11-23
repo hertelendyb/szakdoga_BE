@@ -61,6 +61,12 @@ export class OrganizationsController {
   }
 
   @Roles(1)
+  @Get('/:id/list-users')
+  async listOrgUsers(@Param('id', ParseIntPipe) orgId: number) {
+    return this.organizationsService.listOrgUsers(orgId);
+  }
+
+  @Roles(1)
   @Delete('/:id/remove-user')
   async removeUserFromOrg(
     @Body() body: Partial<User>,

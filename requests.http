@@ -58,6 +58,10 @@ Content-Type: application/json
   "email": "test3@example.com"
 }
 
+### List org users
+GET http://localhost:3000/api/organizations/1/list-users
+
+
 ### Remove user from organization
 DELETE http://localhost:3000/api/organizations/1/remove-user
 Content-Type: application/json
