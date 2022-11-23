@@ -74,6 +74,12 @@ export class ProjectsController {
   }
 
   @Roles(1, 2)
+  @Get('/:projectId/list-users')
+  async listProjectUsers(@Param('projectId', ParseIntPipe) projectId: number) {
+    return this.projectsService.listProjectUsers(projectId);
+  }
+
+  @Roles(1, 2)
   @Delete('/:projectId/remove-user')
   async removeUserFromProject(
     @Body() body: Partial<User>,

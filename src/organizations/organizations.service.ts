@@ -8,7 +8,7 @@ import { Organization } from 'src/entities/organization';
 import { Role } from 'src/entities/role';
 import { User } from 'src/entities/user';
 import { UserOrganizationRole } from 'src/entities/user_organization_role';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 
 @Injectable()
 export class OrganizationsService {
@@ -86,6 +86,16 @@ export class OrganizationsService {
       roleId,
     });
     return this.joinRepo.save(newUser);
+  }
+
+  async listOrgUsers(orgId: number) {
+    return this.joinRepo.find({
+      where: {
+        organizationId: orgId,
+        roleId: Not(1),
+      },
+      relations: ['user'],
+    });
   }
 
   async removeUserFromOrg(userId: number, orgId: number) {

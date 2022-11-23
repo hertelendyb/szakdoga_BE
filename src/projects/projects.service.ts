@@ -117,6 +117,15 @@ export class ProjectsService {
     return this.userProjectRoleRepo.save(newUser);
   }
 
+  async listProjectUsers(projectId: number) {
+    return this.userProjectRoleRepo.find({
+      where: {
+        projectId,
+      },
+      relations: ['user'],
+    });
+  }
+
   async removeUserFromProject(userId: number, projectId: number) {
     return this.userProjectRoleRepo.delete({ userId, projectId });
   }
