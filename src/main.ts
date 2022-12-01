@@ -9,16 +9,15 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.set('trust proxy', 1);
+  app.set('trust proxy');
   app.use(
     session({
       secret: 'keyboard',
       resave: false,
       saveUninitialized: false,
-      name: 'mySession',
       cookie: {
         secure: true,
-        httpOnly: false,
+        httpOnly: true,
         sameSite: 'none',
       },
     }),
