@@ -19,6 +19,6 @@ async function bootstrap() {
   app.use(passport.session());
   app.use(bodyParser.json({ limit: '10mb' }));
 
-  await app.listen(3000);
+  await app.listen(process.env.PORT);
 }
 bootstrap();
