@@ -6,7 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Session,
+  Request,
   UseGuards,
 } from '@nestjs/common';
 import { AuthenticatedGuard } from 'src/auth/authenticated.guard';
@@ -24,22 +24,17 @@ export class OrganizationsController {
   constructor(private organizationsService: OrganizationsService) {}
 
   @Get('/')
-  async listOrganizations(@Session() session: any) {
-    return this.organizationsService.getMyOrganizations(
-      session.passport.user.id,
-    );
+  async listOrganizations(@Request() req) {
+    return this.organizationsService.getMyOrganizations(req.user.id);
   }
 
   @Roles(1, 2, 3)
   @Get('/:id')
   async loadOrganization(
-    @Session() session: any,
+    @Request() req,
     @Param('id', ParseIntPipe) orgId: number,
   ) {
-    return this.organizationsService.loadOrganization(
-      session.passport.user.id,
-      orgId,
-    );
+    return this.organizationsService.loadOrganization(req.user.id, orgId);
   }
 
   @Roles(1)
@@ -78,16 +73,13 @@ export class OrganizationsController {
   @Post('/create')
   async createOrganization(
     @Body() body: CreateOrganizationDto,
-    @Session() session: any,
+    @Request() req,
   ) {
     const organization = await this.organizationsService.createNewOrg(
       body.name,
     );
 
-    await this.organizationsService.createConnection(
-      session.passport.user.id,
-      organization,
-    );
+    await this.organizationsService.createConnection(req.user.id, organization);
 
     return organization;
   }

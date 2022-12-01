@@ -7,7 +7,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
-  Session,
+  Request,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -36,7 +36,7 @@ export class TasksController {
   @Post('/')
   async createTask(
     @Body() body: CreateTaskDto,
-    @Session() session: any,
+    @Request() req,
     @Param('projectId', ParseIntPipe) projectId: number,
   ) {
     return this.taskService.createTask(
@@ -46,7 +46,7 @@ export class TasksController {
       body.assigneeId,
       body.order,
       projectId,
-      session.passport.user,
+      req.user,
     );
   }
 
@@ -55,7 +55,7 @@ export class TasksController {
   @Post('/:taskId')
   async createSubTask(
     @Body() body: CreateTaskDto,
-    @Session() session: any,
+    @Request() req,
     @Param('taskId', ParseIntPipe) taskId: number,
   ) {
     return this.taskService.createSubTask(
@@ -64,7 +64,7 @@ export class TasksController {
       body.deadline,
       taskId,
       body.assigneeId,
-      session.passport.user,
+      req.user,
     );
   }
 
@@ -73,10 +73,10 @@ export class TasksController {
   @Patch('/:taskId')
   async editTask(
     @Body() body: Partial<CreateTaskDto>,
-    @Session() session: any,
+    @Request() req,
     @Param('taskId', ParseIntPipe) taskId: number,
   ) {
-    return this.taskService.editTask(taskId, session.passport.user, body);
+    return this.taskService.editTask(taskId, req.user, body);
   }
 
   @Roles(1, 2)
@@ -84,10 +84,10 @@ export class TasksController {
   @Patch('/:taskId/move')
   async moveTask(
     @Body() body: Partial<CreateTaskDto>,
-    @Session() session: any,
+    @Request() req,
     @Param('taskId', ParseIntPipe) taskId: number,
   ) {
-    return this.taskService.moveTask(taskId, session.passport.user, body);
+    return this.taskService.moveTask(taskId, req.user, body);
   }
 
   @Roles(1, 2, 3)
@@ -108,44 +108,31 @@ export class TasksController {
   @Post('/:taskId/add-comment')
   async addComment(
     @Body() body: AddCommentDto,
-    @Session() session: any,
+    @Request() req,
     @Param('taskId', ParseIntPipe) taskId: number,
   ) {
-    return this.taskService.addComment(
-      taskId,
-      session.passport.user,
-      body.text,
-    );
+    return this.taskService.addComment(taskId, req.user, body.text);
   }
 
   @Roles(1, 2, 3)
   @Delete('/:taskId/delete-comment/:commentId')
   async deleteComment(
-    @Session() session: any,
+    @Request() req,
     @Param('taskId', ParseIntPipe) taskId: number,
     @Param('commentId', ParseIntPipe) commentId: number,
   ) {
-    return this.taskService.deleteComment(
-      taskId,
-      commentId,
-      session.passport.user,
-    );
+    return this.taskService.deleteComment(taskId, commentId, req.user);
   }
 
   @Roles(1, 2, 3)
   @Patch('/:taskId/edit-comment/:commentId')
   async editComment(
     @Body() body: Partial<AddCommentDto>,
-    @Session() session: any,
+    @Request() req,
     @Param('taskId', ParseIntPipe) taskId: number,
     @Param('commentId', ParseIntPipe) commentId: number,
   ) {
-    return this.taskService.editComment(
-      taskId,
-      commentId,
-      session.passport.user,
-      body.text,
-    );
+    return this.taskService.editComment(taskId, commentId, req.user, body.text);
   }
 
   @Roles(1, 2, 3)
