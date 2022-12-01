@@ -15,6 +15,13 @@ async function bootstrap() {
       secret: 'keyboard',
       resave: false,
       saveUninitialized: false,
+      proxy: true,
+      name: 'mySession',
+      cookie: {
+        secure: true,
+        httpOnly: false,
+        sameSite: 'none',
+      },
     }),
   );
   app.enableCors();
