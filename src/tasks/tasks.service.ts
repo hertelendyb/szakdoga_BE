@@ -106,7 +106,10 @@ export class TasksService {
   }
 
   async editTask(taskId: number, user: User, data: Partial<CreateTaskDto>) {
-    const task = await this.taskRepo.findOne({ id: taskId });
+    const task = await this.taskRepo.findOne({
+      where: { id: taskId },
+      relations: ['childTasks', 'assignee'],
+    });
 
     const { name, description, deadline, assigneeId, done, order } = data;
 
